@@ -51,10 +51,6 @@ app.get('/', function(req, res) {
     req.session.loginDate = new Date().toString();
     res.sendfile(__dirname + '/' + folder + '/index.html');
 });
-app.get('/test', function(req, res) {
-    req.session.loginDate = new Date().toString();
-    res.sendfile(__dirname + '/' + folder + '/test.html');
-});
 app.get('/templates/{name}', function(req, res) {
     res.sendfile(__dirname + '/' + folder + '/templates/' + req.name);
 });
