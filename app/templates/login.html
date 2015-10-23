@@ -1,0 +1,36 @@
+<form class="form-horizontal mac-form" name="profile" ng-submit="login($event, user, profile)">
+    <div class="form-group">
+        <label for="name" class="col-sm-2 control-label"></label>
+        <h2 class="form-signin-heading col-sm-10 btext">Please sign in</h2>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': profile.name.$touched && profile.name.$invalid }">
+        <label for="name" class="col-sm-2 control-label btext">Name</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control mac-input" id="name" placeholder="Name"
+                   ng-model="user.name"
+                   ng-required="true"
+                   ng-minlength="3"
+                   name="name"
+                    />
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': profile.photo.$touched && profile.photo.$invalid }">
+        <label for="photo" class="col-sm-2 control-label btext">Photo</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control mac-input" id="photo" placeholder="Photo"
+                   ng-model="user.photo"
+                   ng-pattern="/(https?:\/\/.*\.(?:png|jpg|gif))/"
+                   ng-required="true"
+                   name="photo"
+                    />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <input type="submit" class="mac-input mac-btn btn btn-default" ng-disabled="profile.name.$untouched || profile.$invalid" value="Enter" />
+        </div>
+    </div>
+
+</form>

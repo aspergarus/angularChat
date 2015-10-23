@@ -1,0 +1,93 @@
+body {
+    background: none;
+    font-family: 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.login {
+    margin-top: 25%;
+}
+
+.btext {
+    background-color: #666666;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: rgba(255,255,255,0.5) 0px 3px 3px;
+
+}
+
+.mac-input {
+    display: inline-block;
+    border-radius: 13px;
+    border: 1px solid #fff;
+    background: #fff;
+    -moz-box-shadow: inset 0 -1px 0 0 #c6c6c6,inset 0 1px 0 0 #a6a6a6,inset 0 1px 3px 0 rgba(0,0,0,0.5);
+    box-shadow: inset 0 -1px 0 0 #c6c6c6,inset 0 1px 0 0 #a6a6a6,inset 0 1px 3px 0 rgba(0,0,0,0.5);
+    padding-left: 26px !important;
+    padding-right: 22px !important;
+    height: 24px !important;
+}
+
+.mac-input:focus {
+    outline: none !important;
+    border: 1px solid #6a9ecf !important;
+    -moz-box-shadow: 0 0 2px 1px #71a5d6,inset 0 0 2px 1px #71a5d6 !important;
+    box-shadow: 0 0 2px 1px #71a5d6,inset 0 0 2px 1px #71a5d6 !important;
+    -webkit-transition: none;
+    -moz-transition: none;
+    -ms-transition: none;
+    -o-transition: none;
+    transition: none;
+}
+
+.mac-btn.btn {
+    color: #666;
+    padding-bottom: 1px;
+    padding-top: 1px;
+}
+
+.form-horizontal.mac-form .control-label {
+    padding-top: 3px;
+}
+
+.close-button-list li.mac-close:active {
+    background: #c84840;
+}
+.close-button-list li.mac-close {
+    background: #f12519;
+    background: -moz-linear-gradient(top, #f12519 0%, #ff8684 100%); /* Firefox */
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#f12519), to(#ff8684));
+    color: #630f0a;
+}
+
+.coolscrolbar {
+    height: 589px;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+.coolscrolbar::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    background-color: #F5F5F5;
+}
+
+.coolscrolbar::-webkit-scrollbar
+{
+    width: 12px;
+    background-color: #F5F5F5;
+}
+
+.coolscrolbar::-webkit-scrollbar-thumb
+{
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #555;
+}
+
+.input input {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 16px;
+}

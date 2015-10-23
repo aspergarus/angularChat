@@ -1,0 +1,53 @@
+<div class="window">
+    <aside class="conv-list-view">
+        <header class="conv-list-view__header">
+            <div class="cf">
+                <ul class="close-button-list">
+                    <li ng-click="logout()" class="mac-close"></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+            </div>
+        </header>
+        <ul class="coolscrolbar conv-list" ng-cloak="true">
+            <li ng-repeat="companion in companions">
+                <div class="status">
+                    <figure class="status__avatar">
+                        <img src="{{ companion.photo }}"/>
+                    </figure>
+                    <div class="meta">
+                        <div class="meta__name">{{ companion.name }}</div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </aside>
+    <section class="chat-view">
+        <section class="message-view coolscrolbar">
+            <div class="message" ng-repeat="message in messages">
+                <div class="message--send" ng-class="{'message--send': message.author == currentUser">
+                    <div class="message__bubble--send">
+                        {{ message }}
+                    </div>
+                    <figure class="message__avatar">
+                        <img src="http://1.gravatar.com/avatar/89b9501f0f9e3020aab173f9a5a47683?size=80" />
+                    </figure>
+                </div>
+
+                <div class="cf"></div>
+            </div>
+        </section>
+
+
+        <footer class="chat-view__input">
+            <div class="input">
+                <input type="text" name="msg" input-enter="sendMsg(msg)" ng-model="msg" />
+            </div>
+            <div class="status">
+                <figure class="status__avatar--small">
+                    <img src="http://1.gravatar.com/avatar/89b9501f0f9e3020aab173f9a5a47683?size=80" />
+                </figure>
+            </div>
+        </footer>
+    </section>
+</div>

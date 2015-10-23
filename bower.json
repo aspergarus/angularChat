@@ -1,0 +1,23 @@
+{
+  "name": "angularChat",
+  "version": "1.0.0",
+  "authors": [
+    "Alex Smolyankin"
+  ],
+  "homepage": "https://github.com/mustafa1453/angularChat",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "latest",
+    "bootstrap": "latest",
+    "angular-mocks": "latest",
+    "angular-sanitize": "latest",
+    "angular-ui-router": "latest",
+    "angular-resource": "latest"
+  }
+}
