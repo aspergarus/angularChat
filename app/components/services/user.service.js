@@ -29,11 +29,10 @@
     }
 
     function addCompanion(newUser) {
-        var companions = getCompanions();
-        if (companions) {
-            companions.push(newUser);
-            setCompanions(companions);
-        }
+        debugger;
+        var companions = getCompanions() || [];
+        companions.push(newUser);
+        setCompanions(companions);
     }
 
     function getCompanions() {

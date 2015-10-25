@@ -23,6 +23,8 @@
         };
 
         $scope.companions = userService.getCompanions();
+
+        $scope.currentUser = userService.getUser();
     };
 
     module.controller("chatCtrl", ctrl);

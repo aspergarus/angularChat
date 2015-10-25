@@ -1,5 +1,6 @@
-﻿angular.module("app").factory("wsService", function($location, userService, msgService) {
-    var url = "ws://10.25.164.246:8001";
+﻿angular.module("app").factory("wsService", function($location, $window, userService, msgService) {
+    // var url = "ws://10.25.164.246:8001";
+    var url = "ws://" + $window.location.hostname + ":8001";
     var webSocket = new WebSocket(url);
 
     webSocket.onmessage = function (event) {
@@ -10,9 +11,12 @@
             userService.setCompanions(companions);
         }
         else if (event.data.indexOf(':newOne:') >= 0) {
+            console.log("test newOne");
             var userStr = event.data.slice(":newOne:".length);
             var newUser = JSON.parse(userStr);
-            userService.addCompanion(newUser);
+            if (userService.getUser().name != newUser.name) {
+                userService.addCompanion(newUser);
+            }
         }
         else if (event.data.indexOf(':logout:') >= 0) {
             var userName = event.data.slice(":logout:".length);
@@ -27,8 +31,8 @@
     };
 
     webSocket.onclose = function (event) {
-        logout();
         userService.clearUser();
+        userService.clear();
 
         $location.url('/');
     };
@@ -43,13 +47,6 @@
 
     function send(user, msg) {
         webSocket.send(":msg:" + user.name + ":" + msg);
-    }
-
-    function logout() {
-        var user = userService.getUser();
-        if (user) {
-            webSocket.send(":logout:" + user.name);
-        }
     }
 
     return {

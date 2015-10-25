@@ -28,23 +28,27 @@ var server = ws.createServer(function (conn) {
             var userStr = response.slice(":newOne:".length);
             var newUser = JSON.parse(userStr);
             companions.push(newUser);
-            conn.sendText(":newOne:" + JSON.stringify(newUser));
-        }
-        else if (response.indexOf(':logout:') >= 0) {
-            var userName = response.slice(":logout:".length);
-            companions = companions.filter(function(el) {
-                return el.name != userName;
-            });
-            conn.sendText(":logout:" + userName);
+            conn.user = newUser;
+            broadcast(response);
         }
         else if (response.indexOf(':msg:') >= 0) {
-            conn.sendText(response);
+            broadcast(response);
         }
     });
+
     conn.on("close", function (code, reason) {
-        console.log("Connection closed");
+        companions = companions.filter(function(el) {
+            return el.name != conn.user.name;
+        });
+        broadcast(':logout:' + conn.user.name);
     });
 }).listen(8001);
+
+function broadcast(str) {
+    server.connections.forEach(function (connection) {
+        connection.sendText(str)
+    })
+}
 
 // Session is automatically setup on initial request.
 app.get('/', function(req, res) {
