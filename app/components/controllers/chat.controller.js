@@ -1,6 +1,6 @@
 ﻿(function(module) {
 
-    var ctrl = function ($window, $scope, $location, userService, wsService) {
+    var ctrl = function ($scope, $location, userService, wsService) {
         if (!userService.getUser()) {
             $location.url('/');
         }
@@ -13,6 +13,11 @@
             wsService.send(userService.getUser(), message);
         };
 
+        $scope.$watch(userService.getCompanions, function(val) {
+            debugger;
+            $scope.companions = val;
+        });
+
         $scope.logout = function() {
             debugger;
             wsService.logout();
@@ -22,7 +27,7 @@
             $location.url('/');
         };
 
-        $scope.companions = userService.getCompanions();
+        // $scope.companions = userService.getCompanions();
 
         $scope.currentUser = userService.getUser();
     };

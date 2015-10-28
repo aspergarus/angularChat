@@ -37,7 +37,7 @@ var server = ws.createServer(function (conn) {
     });
 
     conn.on("close", function (code, reason) {
-        if (companions.length > 0) {
+        if (companions.length > 0 && conn.user != undefined) {
             companions = companions.filter(function(el) {
                 return el.name != conn.user.name;
             });

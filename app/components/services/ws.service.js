@@ -11,10 +11,11 @@
             userService.setCompanions(companions);
         }
         else if (event.data.indexOf(':newOne:') >= 0) {
-            console.log("test newOne");
             var userStr = event.data.slice(":newOne:".length);
             var newUser = JSON.parse(userStr);
-            if (userService.getUser().name != newUser.name) {
+
+            var currentUser = userService.getUser() || {};
+            if (currentUser.name != newUser.name) {
                 userService.addCompanion(newUser);
             }
         }
@@ -49,9 +50,14 @@
         webSocket.send(":msg:" + user.name + ":" + msg);
     }
 
+    function logout() {
+        var currentUser = userService.getUser();
+        webSocket.send(":logout:" + currentUser.name);
+    }
+
     return {
         init: init,
-        send: send,
-        logout: logout
+        logout: logout,
+        send: send
     };
 });

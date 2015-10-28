@@ -11,21 +11,25 @@
         $window.localStorage.removeItem('curUser');
     }
 
-    function setCompanions(allCompanions) {
-        var stat = allCompanions.reduce(function(prev, cur) {
-            prev[cur.name] = prev[cur.name] ? prev[cur.name] + 1 : 1;
-            return prev;
-        }, {});
+    function setCompanions(newCompanions) {
+        var oldCompanions = getCompanions();
 
-        var cleanedCompanions = [];
-        for (var name in stat) {
-            var findComp = allCompanions.filter(function(el) {
-                return el.name == name;
-            });
-            if (findComp.length > 0)
-            cleanedCompanions.push(findComp[0]);
+        if (oldCompanions) {
+            for (var i = 0; i < newCompanions.length; i++) {
+                var alreadyExisted = oldCompanions.filter(function(comp) {
+                    return comp.name != newCompanions[i].name;
+                });
+                if (alreadyExisted.length > 0) {
+                    newCompanions.splice(i, 1);
+                    i--;
+                }
+            }
         }
-        $window.localStorage.setItem('companions', JSON.stringify(cleanedCompanions));
+        debugger;
+
+        newCompanions = newCompanions || [];
+
+        $window.localStorage.setItem('companions', JSON.stringify(newCompanions.concat(oldCompanions)));
     }
 
     function addCompanion(newUser) {
