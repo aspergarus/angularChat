@@ -37,10 +37,14 @@ var server = ws.createServer(function (conn) {
     });
 
     conn.on("close", function (code, reason) {
-        companions = companions.filter(function(el) {
-            return el.name != conn.user.name;
-        });
-        broadcast(':logout:' + conn.user.name);
+        if (companions.length > 0) {
+            companions = companions.filter(function(el) {
+                return el.name != conn.user.name;
+            });
+        }
+        if (conn.user) {
+            broadcast(':logout:' + conn.user.name);
+        }
     });
 }).listen(8001);
 
