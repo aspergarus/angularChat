@@ -1,6 +1,6 @@
 ﻿(function(module) {
 
-    var ctrl = function ($scope, $location, userService, wsService) {
+    var ctrl = function ($scope, $location, userService, wsService, msgService) {
         if (!userService.getUser()) {
             $location.url('/');
         }
@@ -9,12 +9,16 @@
         $scope.sendMsg = function(message) {
             event.preventDefault();
 
+            var currentUser = userService.getUser();
+
             // Send message from current user
-            wsService.send(userService.getUser(), message);
+            wsService.send(currentUser.name, message);
+
+            // Save message to messages via service
+            msgService.add({author: currentUser.name, msg: message});
         };
 
-        $scope.$watch(userService.getCompanions, function(val) {
-            debugger;
+        $scope.$watchCollection(userService.getCompanions, function(val) {
             $scope.companions = val;
         });
 

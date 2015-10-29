@@ -31,10 +31,13 @@ var server = ws.createServer(function (conn) {
                 companions[newUser.name] = newUser;
             }
             conn.userName = newUser.name;
-            broadcast(response);
+            broadcast(response, newUser.name);
         }
         else if (response.indexOf(':msg:') >= 0) {
-            broadcast(response);
+            var msgInfo = response.slice(":msg:".length);
+            var userName = msgInfo.slice(0, msgInfo.indexOf(":"));
+            var msg = msgInfo.slice(msgInfo.indexOf(":") + 1);
+            broadcast(response, userName);
         }
     });
 
@@ -45,13 +48,16 @@ var server = ws.createServer(function (conn) {
         if (conn.user) {
             broadcast(':logout:' + conn.userName);
         }
+        console.log(JSON.stringify(companions));
     });
 }).listen(8001);
 
-function broadcast(str) {
+function broadcast(str, excludeReceiver) {
     server.connections.forEach(function (connection) {
-        connection.sendText(str)
-    })
+        if (connection.userName != excludeReceiver) {
+            connection.sendText(str);
+        }
+    });
 }
 
 // Session is automatically setup on initial request.

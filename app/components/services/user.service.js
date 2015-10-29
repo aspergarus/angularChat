@@ -1,21 +1,25 @@
 ﻿angular.module("app").factory("userService", function($window) {
+
+    var companions = JSON.parse($window.localStorage.getItem('companions')) || {};
+    var currentUser = JSON.parse($window.localStorage.getItem('curUser')) || {};
+
     function setUser(user) {
+        currentUser = user;
         $window.localStorage.setItem('curUser', JSON.stringify(user));
     }
 
     function getUser() {
-        return JSON.parse($window.localStorage.getItem('curUser'));
+        return currentUser;
     }
 
     function clearUser() {
+        currentUser = {};
         $window.localStorage.removeItem('curUser');
     }
 
     function setCompanions(newCompanions) {
-        var companions = getCompanions() || {};
-
         for (var name in newCompanions) {
-            if (!companions[name]) {
+            if (!companions.hasOwnProperty(name)) {
                 companions[name] = newCompanions[name];
             }
         }
@@ -24,7 +28,6 @@
     }
 
     function addCompanion(newUser) {
-        var companions = getCompanions() || {};
         if (!companions[newUser.name]) {
             companions[newUser.name] = newUser;
         }
@@ -32,15 +35,15 @@
     }
 
     function getCompanions() {
-        return JSON.parse($window.localStorage.getItem('companions'));
+        return companions;
     }
 
     function clear() {
+        companions = {};
         $window.localStorage.removeItem('companions');
     }
 
     function removeCompanion(userName) {
-        var companions = getCompanions() || {};
         if (companions[userName]) {
             delete companions[userName];
         }

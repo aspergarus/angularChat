@@ -1,41 +1,46 @@
-﻿angular.module("app").factory("wsService", function($location, $window, userService, msgService) {
+﻿angular.module("app").factory("wsService", function($rootScope, $location, $window, userService, msgService) {
     // var url = "ws://10.25.164.246:8001";
     var url = "ws://" + $window.location.hostname + ":8001";
     var webSocket = new WebSocket(url);
 
     webSocket.onmessage = function (event) {
         console.log('onmessage, ' + event.data);
-        if (event.data.indexOf(':all:') >= 0) {
-            var companionsStr = event.data.slice(":all:".length);
-            var companions = JSON.parse(companionsStr);
-            userService.setCompanions(companions);
-        }
-        else if (event.data.indexOf(':newOne:') >= 0) {
-            var userStr = event.data.slice(":newOne:".length);
-            var newUser = JSON.parse(userStr);
-
-            var currentUser = userService.getUser() || {};
-            if (currentUser.name != newUser.name) {
-                userService.addCompanion(newUser);
+        $rootScope.$apply(function(){
+            if (event.data.indexOf(':all:') >= 0) {
+                var companionsStr = event.data.slice(":all:".length);
+                var companions = JSON.parse(companionsStr);
+                userService.setCompanions(companions);
             }
-        }
-        else if (event.data.indexOf(':logout:') >= 0) {
-            var userName = event.data.slice(":logout:".length);
-            userService.removeCompanion(userName);
-        }
-        else if (event.data.indexOf(':msg:') >= 0) {
-            var msgParts = event.data.slice(":msg:".length).split(':');
-            var author = msgParts[0];
-            var msg = msgParts[1];
-            msgService.add({msg: msg, author: author});
-        }
+            else if (event.data.indexOf(':newOne:') >= 0) {
+                debugger;
+                var userStr = event.data.slice(":newOne:".length);
+                var newUser = JSON.parse(userStr);
+
+                var currentUser = userService.getUser() || {};
+                if (currentUser.name != newUser.name) {
+                    userService.addCompanion(newUser);
+                }
+            }
+            else if (event.data.indexOf(':logout:') >= 0) {
+                var userName = event.data.slice(":logout:".length);
+                userService.removeCompanion(userName);
+            }
+            else if (event.data.indexOf(':msg:') >= 0) {
+                var msgInfo = event.data.slice(":msg:".length);
+                var author = msgInfo.slice(0, msgInfo.indexOf(":"));
+                var msg = msgInfo.slice(msgInfo.indexOf(":") + 1);
+                msgService.add({author: author, msg: msg});
+            }
+        });
     };
 
     webSocket.onclose = function (event) {
-        userService.clearUser();
-        userService.clear();
+        $rootScope.$apply(function() {
+            userService.clearUser();
+            userService.clear();
 
-        $location.url('/');
+            $location.url('/');
+        });
     };
 
     function init(user) {
@@ -46,8 +51,8 @@
         webSocket.send(":all:");
     }
 
-    function send(user, msg) {
-        webSocket.send(":msg:" + user.name + ":" + msg);
+    function send(userName, msg) {
+        webSocket.send(":msg:" + userName + ":" + msg);
     }
 
     function logout() {
