@@ -25,16 +25,7 @@
     <section class="chat-view">
         <section class="message-view coolscrolbar">
             <div class="message" ng-repeat="message in messages">
-                <div class="message--send" ng-class="{'message--send': message.author == currentUser}">
-                    <div class="message__bubble--send">
-                        {{ message }}
-                    </div>
-                    <figure class="message__avatar">
-                        <img src="http://1.gravatar.com/avatar/89b9501f0f9e3020aab173f9a5a47683?size=80" />
-                    </figure>
-                </div>
-
-                <div class="cf"></div>
+                <div message text="message.msg" img="companions[message.author].photo" owner="message.author == currentUser.name"></div>
             </div>
         </section>
 

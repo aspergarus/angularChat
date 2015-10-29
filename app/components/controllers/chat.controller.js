@@ -16,22 +16,26 @@
 
             // Save message to messages via service
             msgService.add({author: currentUser.name, msg: message});
+
+            // Clear form after send message
+            $scope.msg = '';
         };
 
         $scope.$watchCollection(userService.getCompanions, function(val) {
             $scope.companions = val;
         });
 
+        $scope.$watchCollection(msgService.getAll, function(val) {
+            $scope.messages = val;
+        });
+
         $scope.logout = function() {
-            debugger;
             wsService.logout();
             userService.clearUser();
             userService.clear();
 
             $location.url('/');
         };
-
-        // $scope.companions = userService.getCompanions();
 
         $scope.currentUser = userService.getUser();
     };

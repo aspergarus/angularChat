@@ -1,0 +1,12 @@
+<div ng-class="{ 'message--send': owner, 'message': !owner }">
+    <figure class="message__avatar" ng-if="!owner">
+        <img ng-src="{{ img }}" />
+    </figure>
+    <div class="message__bubble">
+        {{ text }}
+    </div>
+    <figure class="message__avatar" ng-if="owner">
+        <img ng-src="{{ img }}" />
+    </figure>
+</div>
+<div class="cf"></div>

@@ -1,10 +1,8 @@
 ﻿angular.module("app").factory("wsService", function($rootScope, $location, $window, userService, msgService) {
-    // var url = "ws://10.25.164.246:8001";
     var url = "ws://" + $window.location.hostname + ":8001";
     var webSocket = new WebSocket(url);
 
     webSocket.onmessage = function (event) {
-        console.log('onmessage, ' + event.data);
         $rootScope.$apply(function(){
             if (event.data.indexOf(':all:') >= 0) {
                 var companionsStr = event.data.slice(":all:".length);
@@ -12,7 +10,6 @@
                 userService.setCompanions(companions);
             }
             else if (event.data.indexOf(':newOne:') >= 0) {
-                debugger;
                 var userStr = event.data.slice(":newOne:".length);
                 var newUser = JSON.parse(userStr);
 
@@ -29,7 +26,12 @@
                 var msgInfo = event.data.slice(":msg:".length);
                 var author = msgInfo.slice(0, msgInfo.indexOf(":"));
                 var msg = msgInfo.slice(msgInfo.indexOf(":") + 1);
-                msgService.add({author: author, msg: msg});
+
+                var currentUser = userService.getUser() || {};
+
+                if (currentUser.name != author) {
+                    msgService.add({author: author, msg: msg});
+                }
             }
         });
     };

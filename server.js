@@ -19,8 +19,7 @@ var companions = {};
 
 var server = ws.createServer(function (conn) {
     conn.on("text", function (response) {
-        console.log("Received " + response);
-
+        console.log("Received ", response);
         if (response.indexOf(':all:') >= 0) {
             conn.sendText(":all:" + JSON.stringify(companions));
         }
@@ -31,13 +30,13 @@ var server = ws.createServer(function (conn) {
                 companions[newUser.name] = newUser;
             }
             conn.userName = newUser.name;
-            broadcast(response, newUser.name);
+            broadcast(response);
         }
         else if (response.indexOf(':msg:') >= 0) {
             var msgInfo = response.slice(":msg:".length);
             var userName = msgInfo.slice(0, msgInfo.indexOf(":"));
             var msg = msgInfo.slice(msgInfo.indexOf(":") + 1);
-            broadcast(response, userName);
+            broadcast(response);
         }
     });
 
@@ -45,18 +44,20 @@ var server = ws.createServer(function (conn) {
         if (companions[conn.userName]) {
             delete companions[conn.userName];
         }
-        if (conn.user) {
+        if (conn.userName) {
             broadcast(':logout:' + conn.userName);
         }
         console.log(JSON.stringify(companions));
     });
 }).listen(8001);
 
-function broadcast(str, excludeReceiver) {
+setInterval(function() {
+    console.log('Number of connection to ws: ' + server.connections.length);
+}, 5000);
+
+function broadcast(str) {
     server.connections.forEach(function (connection) {
-        if (connection.userName != excludeReceiver) {
-            connection.sendText(str);
-        }
+        connection.sendText(str);
     });
 }
 
