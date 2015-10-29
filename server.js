@@ -15,7 +15,7 @@ app.listen(8000);
 
 var ws = require("nodejs-websocket");
 
-var companions = [];
+var companions = {};
 
 var server = ws.createServer(function (conn) {
     conn.on("text", function (response) {
@@ -27,8 +27,10 @@ var server = ws.createServer(function (conn) {
         else if (response.indexOf(':newOne:') >= 0) {
             var userStr = response.slice(":newOne:".length);
             var newUser = JSON.parse(userStr);
-            companions.push(newUser);
-            conn.user = newUser;
+            if (!companions[newUser.name]) {
+                companions[newUser.name] = newUser;
+            }
+            conn.userName = newUser.name;
             broadcast(response);
         }
         else if (response.indexOf(':msg:') >= 0) {
@@ -37,13 +39,11 @@ var server = ws.createServer(function (conn) {
     });
 
     conn.on("close", function (code, reason) {
-        if (companions.length > 0 && conn.user != undefined) {
-            companions = companions.filter(function(el) {
-                return el.name != conn.user.name;
-            });
+        if (companions[conn.userName]) {
+            delete companions[conn.userName];
         }
         if (conn.user) {
-            broadcast(':logout:' + conn.user.name);
+            broadcast(':logout:' + conn.userName);
         }
     });
 }).listen(8001);

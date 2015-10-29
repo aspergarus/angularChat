@@ -12,31 +12,23 @@
     }
 
     function setCompanions(newCompanions) {
-        var oldCompanions = getCompanions();
+        var companions = getCompanions() || {};
 
-        if (oldCompanions) {
-            for (var i = 0; i < newCompanions.length; i++) {
-                var alreadyExisted = oldCompanions.filter(function(comp) {
-                    return comp.name != newCompanions[i].name;
-                });
-                if (alreadyExisted.length > 0) {
-                    newCompanions.splice(i, 1);
-                    i--;
-                }
+        for (var name in newCompanions) {
+            if (!companions[name]) {
+                companions[name] = newCompanions[name];
             }
         }
-        debugger;
 
-        newCompanions = newCompanions || [];
-
-        $window.localStorage.setItem('companions', JSON.stringify(newCompanions.concat(oldCompanions)));
+        $window.localStorage.setItem('companions', JSON.stringify(companions));
     }
 
     function addCompanion(newUser) {
-        debugger;
-        var companions = getCompanions() || [];
-        companions.push(newUser);
-        setCompanions(companions);
+        var companions = getCompanions() || {};
+        if (!companions[newUser.name]) {
+            companions[newUser.name] = newUser;
+        }
+        $window.localStorage.setItem('companions', JSON.stringify(companions));
     }
 
     function getCompanions() {
@@ -48,13 +40,11 @@
     }
 
     function removeCompanion(userName) {
-        var comp = getCompanions();
-        if (comp) {
-            comp = comp.filter(function(el) {
-                return el.name != userName;
-            });
-            setCompanions(comp);
+        var companions = getCompanions() || {};
+        if (companions[userName]) {
+            delete companions[userName];
         }
+        $window.localStorage.setItem('companions', JSON.stringify(companions));
     }
 
     return {
