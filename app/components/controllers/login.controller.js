@@ -8,7 +8,6 @@
             // Save user to current user, and add it to other users in chat.
             userService.setUser(user);
             userService.addCompanion(user);
-            wsService.init(user);
 
             $location.url('/chat');
         };

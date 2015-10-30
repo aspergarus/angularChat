@@ -5,6 +5,15 @@
             $location.url('/');
         }
 
+        (function retrieveLostUser() {
+            var currentUser = userService.getUser();
+            if (!currentUser) {
+                return;
+            }
+            debugger;
+            wsService.init(currentUser);
+        })();
+
         // Send message from input
         $scope.sendMsg = function(message) {
             event.preventDefault();
